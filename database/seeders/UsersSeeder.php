@@ -17,7 +17,7 @@ class UsersSeeder extends Seeder
         //
         $data=array(
             array(
-                'name'=>'CodeAstro',
+                'name'=>'Waleed Khan',
                 'email'=>'admin@mail.com',
                 'password'=>Hash::make('password'),
                 'role'=>'admin',
