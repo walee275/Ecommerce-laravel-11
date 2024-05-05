@@ -16,95 +16,185 @@ new class extends Component
     }
 }; ?>
 
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
-    <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" wire:navigate>
-                        <x-backend.application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
-                    </a>
-                </div>
+<nav class="mb-4 bg-white shadow navbar navbar-expand navbar-light topbar static-top">
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-backend.nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dashboard') }}
-                    </x-backend.nav-link>
-                </div>
-            </div>
+    <!-- Sidebar Toggle (Topbar) -->
+    <button id="sidebarToggleTop" class="mr-3 btn btn-link rounded-circle">
+      <i class="fa fa-bars"></i>
+    </button>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-backend.dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
 
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
+    <!-- Topbar Navbar -->
+    <ul class="ml-auto navbar-nav">
 
-                    <x-slot name="content">
-                        <x-backend.dropdown-link :href="route('profile')" wire:navigate>
-                            {{ __('Profile') }}
-                        </x-backend.dropdown-link>
-
-                        <!-- Authentication -->
-                        <button wire:click="logout" class="w-full text-start">
-                            <x-backend.dropdown-link>
-                                {{ __('Log Out') }}
-                            </x-backend.dropdown-link>
-                        </button>
-                    </x-slot>
-                </x-backend.dropdown>
-            </div>
-
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+      <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+      <li class="nav-item dropdown no-arrow d-sm-none">
+        <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-search fa-fw"></i>
+        </a>
+        <!-- Dropdown - Messages -->
+        <div class="p-3 shadow dropdown-menu dropdown-menu-right animated--grow-in" aria-labelledby="searchDropdown">
+          <form class="mr-auto form-inline w-100 navbar-search">
+            <div class="input-group">
+              <input type="text" class="border-0 form-control bg-light small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="button">
+                  <i class="fas fa-search fa-sm"></i>
                 </button>
+              </div>
             </div>
+          </form>
         </div>
-    </div>
+      </li>
 
-    <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-backend.responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                {{ __('Dashboard') }}
-            </x-backend.responsive-nav-link>
+      {{-- Home page --}}
+      <li class="mx-1 nav-item dropdown no-arrow">
+        <a class="nav-link dropdown-toggle" href="{{route('home')}}" target="_blank" data-toggle="tooltip" data-placement="bottom" title="home"  role="button">
+          <i class="fas fa-home fa-fw"></i>
+        </a>
+      </li>
+
+      <!-- Nav Item - Alerts -->
+      <li class="mx-1 nav-item dropdown no-arrow">
+       {{-- @include('backend.notification.show') --}}
+      </li>
+
+      <!-- Nav Item - Messages -->
+      {{-- <li class="mx-1 nav-item dropdown no-arrow" id="messageT" data-url="{{route('messages.five')}}">
+        @include('backend.message.message')
+      </li> --}}
+
+      <div class="topbar-divider d-none d-sm-block"></div>
+
+      <!-- Nav Item - User Information -->
+      <!-- Visit 'codeastro' for more projects -->
+      <li class="nav-item dropdown no-arrow">
+        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="mr-2 text-gray-600 d-none d-lg-inline small">{{Auth()->user()->name}}</span>
+          @if(Auth()->user()->photo)
+            <img class="img-profile rounded-circle" src="{{Auth()->user()->photo}}">
+          @else
+            <img class="img-profile rounded-circle" src="{{asset('backend/img/avatar.png')}}">
+          @endif
+        </a>
+        <!-- Dropdown - User Information -->
+        <div class="shadow dropdown-menu dropdown-menu-right animated--grow-in" aria-labelledby="userDropdown">
+          <a class="dropdown-item" href="">
+            <i class="mr-2 text-gray-400 fas fa-user fa-sm fa-fw"></i>
+            Profile
+          </a>
+          <a class="dropdown-item" href="">
+            <i class="mr-2 text-gray-400 fas fa-key fa-sm fa-fw"></i>
+            Change Password
+          </a>
+          <a class="dropdown-item" href="">
+            <i class="mr-2 text-gray-400 fas fa-cogs fa-sm fa-fw"></i>
+            Settings
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href=""
+                onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();">
+                 <i class="mr-2 text-gray-400 fas fa-sign-out-alt fa-sm fa-fw"></i> {{ __('Logout') }}
+            </a>
+
+            <form id="logout-form" action="" method="POST" style="display: none;">
+                @csrf
+            </form>
         </div>
+      </li>
 
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200" x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
-                <div class="font-medium text-sm text-gray-500">{{ auth()->user()->email }}</div>
-            </div>
+    </ul>
 
-            <div class="mt-3 space-y-1">
-                <x-backend.responsive-nav-link :href="route('profile')" wire:navigate>
-                    {{ __('Profile') }}
-                </x-backend.responsive-nav-link>
+  </nav>
 
-                <!-- Authentication -->
-                <button wire:click="logout" class="w-full text-start">
-                    <x-backend.responsive-nav-link>
-                        {{ __('Log Out') }}
-                    </x-backend.responsive-nav-link>
+
+    <!-- Sidebar Toggle (Topbar) -->
+    <button id="sidebarToggleTop" class="mr-3 btn btn-link rounded-circle">
+      <i class="fa fa-bars"></i>
+    </button>
+
+
+    <!-- Topbar Navbar -->
+    <ul class="ml-auto navbar-nav">
+
+      <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+      <li class="nav-item dropdown no-arrow d-sm-none">
+        <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-search fa-fw"></i>
+        </a>
+        <!-- Dropdown - Messages -->
+        <div class="p-3 shadow dropdown-menu dropdown-menu-right animated--grow-in" aria-labelledby="searchDropdown">
+          <form class="mr-auto form-inline w-100 navbar-search">
+            <div class="input-group">
+              <input type="text" class="border-0 form-control bg-light small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="button">
+                  <i class="fas fa-search fa-sm"></i>
                 </button>
+              </div>
             </div>
+          </form>
         </div>
-    </div>
-</nav>
+      </li>
+
+      {{-- Home page --}}
+      <li class="mx-1 nav-item dropdown no-arrow">
+        <a class="nav-link dropdown-toggle" href="{{route('home')}}" target="_blank" data-toggle="tooltip" data-placement="bottom" title="home"  role="button">
+          <i class="fas fa-home fa-fw"></i>
+        </a>
+      </li>
+
+      <!-- Nav Item - Alerts -->
+      <li class="mx-1 nav-item dropdown no-arrow">
+       {{-- @include('backend.notification.show') --}}
+      </li>
+
+      <!-- Nav Item - Messages -->
+      {{-- <li class="mx-1 nav-item dropdown no-arrow" id="messageT" data-url="{{route('messages.five')}}">
+        @include('backend.message.message')
+      </li> --}}
+
+      <div class="topbar-divider d-none d-sm-block"></div>
+
+      <!-- Nav Item - User Information -->
+      <!-- Visit 'codeastro' for more projects -->
+      <li class="nav-item dropdown no-arrow">
+        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="mr-2 text-gray-600 d-none d-lg-inline small">{{Auth()->user()->name}}</span>
+          @if(Auth()->user()->photo)
+            <img class="img-profile rounded-circle" src="{{Auth()->user()->photo}}">
+          @else
+            <img class="img-profile rounded-circle" src="{{asset('backend/img/avatar.png')}}">
+          @endif
+        </a>
+        <!-- Dropdown - User Information -->
+        <div class="shadow dropdown-menu dropdown-menu-right animated--grow-in" aria-labelledby="userDropdown">
+          <a class="dropdown-item" href="">
+            <i class="mr-2 text-gray-400 fas fa-user fa-sm fa-fw"></i>
+            Profile
+          </a>
+          <a class="dropdown-item" href="">
+            <i class="mr-2 text-gray-400 fas fa-key fa-sm fa-fw"></i>
+            Change Password
+          </a>
+          <a class="dropdown-item" href="">
+            <i class="mr-2 text-gray-400 fas fa-cogs fa-sm fa-fw"></i>
+            Settings
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href=""
+                onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();">
+                 <i class="mr-2 text-gray-400 fas fa-sign-out-alt fa-sm fa-fw"></i> {{ __('Logout') }}
+            </a>
+
+            <form id="logout-form" action="" method="POST" style="display: none;">
+                @csrf
+            </form>
+        </div>
+      </li>
+
+    </ul>
+
+  </nav>
